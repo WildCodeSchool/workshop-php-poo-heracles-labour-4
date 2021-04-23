@@ -4,18 +4,31 @@ require '../vendor/autoload.php';
 
 /** ✅ DEBUT DE LA ZONE À MODIFIER ✅ **/
 
+use App\Arena;
 use App\Shield;
 use App\Weapon;
-use App\Fighter;
+use App\Hero;
+use App\Monster;
 
-$heracles = new Fighter('Heracles', 20, 6, 'heracles.svg');
-$bird1 = new Fighter('Bird', 25, 12, 'bird.svg');
-$bird2 = new Fighter('Bird', 25, 12, 'bird.svg');
-$bird3 = new Fighter('Bird', 25, 12, 'bird.svg');
+$heracles = new Hero('Heracles', 20, 6, 'heracles.svg');
+$bird1 = new Monster('Bird', 25, 12, 'bird.svg');
+$bird2 = new Monster('Bird', 25, 12, 'bird.svg');
+$bird3 = new Monster('Bird', 25, 12, 'bird.svg');
 
+$arena = new Arena($heracles, [$bird1, $bird2, $bird3]);
+$heracles->setX(0);
+$heracles->setY(0);
+$bird1->setX(4);
+$bird1->setY(4);
+$bird2->setX(5);
+$bird2->setY(5);
+$bird3->setX(6);
+$bird3->setY(8);
 
-$sword = new Weapon();
-$heracles->setWeapon($sword);
+$sword = new Weapon(10);
+$bow = new Weapon(8, 5, 'bow.svg');
+
+$heracles->setWeapon($bow);
 
 $shield = new Shield();
 $heracles->setShield($shield);
