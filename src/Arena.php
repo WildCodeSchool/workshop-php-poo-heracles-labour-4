@@ -3,11 +3,10 @@
 namespace App;
 
 use Exception;
-use SplObjectStorage;
 
 class Arena 
 {
-    private SplObjectStorage $monsters;
+    private array $monsters;
     private Hero $hero;
 
     private int $size = 10;
@@ -15,78 +14,7 @@ class Arena
     public function __construct(Hero $hero, array $monsters)
     {
         $this->hero = $hero;
-        $this->monsters = new SplObjectStorage();
-        foreach($monsters as $monster) {
-            $this->monsters->attach($monster);
-        }
-    }
-
-    private function getMonster(int $id): Monster
-    {
-       foreach($this->getMonsters() as $key => $monster) {
-            if($key === $id) {
-                return $monster;
-            }
-        }
-
-        throw new Exception('No monster found');
-    }
-
-    public function fight(int $id)
-    {
-        $monster = $this->getMonster($id);
-        if($this->touchable($this->getHero(), $monster)) { 
-            $this->getHero()->fight($monster);
-        } else {
-            throw new Exception('Monster out of range');
-        }
-
-        if(!$monster->isAlive()) {
-            $this->getHero()->setXp($this->getHero()->getXp() + $monster->getXp());
-            $this->getMonsters()->detach($monster);
-        }   
-
-        if($this->touchable($monster, $this->getHero())) { 
-            $monster->fight($this->getHero());
-        } else {
-            throw new Exception('Hero out of range');
-        }
-    }
-
-    public function move(Fighter $fighter, string $direction): void 
-    {
-        $x = $fighter->getX();
-        $y = $fighter->getY();
-
-        if ($direction === 'W') {
-            $x--;
-        }  
-        if ($direction === 'E') {
-            $x++;
-        }
-        if ($direction === 'N') {
-            $y--;
-        }  
-        if ($direction === 'S') {
-            $y++;
-        }
-
-        $this->checkMove($x, $y);
-        $fighter->setX($x);
-        $fighter->setY($y);
-    }
-
-    private function checkMove($x, $y) 
-    {
-        if($x<0 || $x>=$this->getSize() || $y<0 || $y>=$this->getSize()) {
-            throw new Exception('Out of map');
-        }
-        
-        foreach($this->getMonsters() as $monster) {
-            if($monster->getX() === $x && $monster->getY() === $y) {
-                throw new Exception('Position is not free');
-            }
-        }
+        $this->monsters = $monsters;
     }
 
     public function getDistance(Fighter $startFighter, Fighter $endFighter): float
@@ -104,7 +32,7 @@ class Arena
     /**
      * Get the value of monsters
      */ 
-    public function getMonsters(): SplObjectStorage
+    public function getMonsters(): array
     {
         return $this->monsters;
     }

@@ -8,7 +8,7 @@ Le travail continue pour Héraclès. Il doit maintenant venir à bout des jument
 
 Pour ce nouvel atelier, tu reprends là encore où tu t'étais arrêté à l'étape précédente. Tu as un héros qui peut se déplacer et une gestion de la portée pour tes attaques. 
 
-> Tu noteras que quelques modifications ont été apportées ici, car le déroulement d'une partie se fait maintenant sur plusieurs tours. À chaque tour, tu pourras te déplacer ou attaquer afin de rendre la partie un peu plus intéractive. Les sessions sont utilisées pour persister les informations d'un tour à l'autre, mais tu n'as pas à te soucier de cela, concentre toi sur tes classes et sur la partie du fichier *index.php* que tu as le droit de modifier.
+> Tu noteras que quelques modifications ont été apportées ici, car le déroulement d'une partie se fait maintenant sur plusieurs tours. À chaque tour, tu pourras te déplacer ou attaquer afin de rendre la partie un peu plus intéractive. Les sessions sont utilisées pour persister les informations d'un tour à l'autre, mais tu n'as pas à te soucier de cela, concentre toi sur tes classes. Tu ne devrais pas non plus avoir à modifier le fichier *index.php* que tu as le droit de modifier, l'arène, le héros et les monstres sont déjà instanciés.
 
 > Tu remarqueras aussi un bouton "Reset" en haut à droite qui te permets de "recommencer" une partie en réinitialisant le jeu.
 
@@ -30,7 +30,7 @@ De plus, fait en sorte qu'il soit impossible de "sortir" de la carte, mais égal
 
 > Pour "tester" le déplacement, tu peux simplement utiliser les touches de ton clavier. Un peu de JS est utilisé pour détecter si tu utilises ces touches, et si c'est le cas, va exécuter la méthode `move()`. N'hésite pas à regarder comment le code est fait si cela t'intéresse, mais ne le modifie pas. 
 
-Ton personne se déplace, c'est bien ! Normalement, la notion de portée (en fonction de l'arme que le héros porte) est toujours fonctionnelle et les monstres doivent se griser ou non en fonction de la distance.
+Ton personne se déplace, c'est bien ! Normalement, la notion de portée (en fonction de l'arme que le héros porte) est toujours fonctionnelle et les monstres doivent se griser ou non en fonction de la distance. Tu peux t'amuser à changer l'arme d'Héraclès si tu veux.
 
 ## Que la bataille commence !
 

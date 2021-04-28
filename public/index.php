@@ -41,7 +41,7 @@ if (!$arena instanceof Arena) {
     $sword = new Weapon(10);
     $bow = new Weapon(8, 5, 'bow.svg');
 
-    $heracles->setWeapon($bow);
+    $heracles->setWeapon($sword);
 
     $shield = new Shield();
     $heracles->setShield($shield);
@@ -54,11 +54,11 @@ $_SESSION['arena'] = $arena;
 
 /** ⛔ FIN DE LA ZONE A MODIFIER ⛔ **/
 try {
-    if (!empty($_GET['move'])) {
+    if (!empty($_GET['move']) && method_exists($arena, 'move')) {
         $arena->move($arena->getHero(), $_GET['move']);
     }
-    if (isset($_GET['fight'])) {
-        $arena->fight($_GET['fight']);
+    if (isset($_GET['fight']) && method_exists($arena, 'battle')) {
+        $arena->battle($_GET['fight']);
     }
 } catch (Exception $exception) {
     $error = $exception->getMessage();
