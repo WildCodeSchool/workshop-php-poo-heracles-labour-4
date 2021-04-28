@@ -14,6 +14,7 @@ class Fighter
     private int $x;
     private int $y;
     protected float $range = 1;
+    private int $xp = 1000;
 
     public function __construct(
         string $name,
@@ -100,7 +101,7 @@ class Fighter
      */
     public function getStrength(): int
     {
-        return $this->strength;
+        return $this->strength * Level::calculate($this->xp);
     }
 
     /**
@@ -167,5 +168,25 @@ class Fighter
     public function getRange(): float
     {
         return $this->range;
+    }
+
+    /**
+     * Get the value of xp
+     */ 
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+    /**
+     * Set the value of xp
+     *
+     * @return  self
+     */ 
+    public function setXp($xp)
+    {
+        $this->xp = $xp;
+
+        return $this;
     }
 }

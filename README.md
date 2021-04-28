@@ -1,56 +1,60 @@
-# Travaux d'Héraclès #3 : les oiseaux du lac Stymphale
+# Travaux d'Héraclès #4 : les juments de Diomèdes
  
 Prérequis : cloner ce *repository*.
 
 Fais un `composer install`
 
-> Tu remarqueras que les fichiers *composer.json* et *composer.lock* sont déjà présents, et que l'*autoload* est configuré dans *composer.json*. Ainsi, dans *index.php*, les `require` multiples des classes ont été remplacés par un unique `require` de *vendor/autoload.php*. Des *namespaces* ont également été ajoutés sur les classes puisqu'ils servent pour l'*autoload*. 
+Le travail continu pour Héraclès. Il doit maintenant venir à bout des juments carnivores du roi Diomède.
 
-## Heritage
+Pour ce nouvel atelier, tu reprends là encore où tu t'étais arrêté à l'étape précédente. Tu as un héros qui peut se déplacer et une notion de portée pour tes armes. 
 
-Un nouvelle épreuve attend notre champion, tuer les oiseaux monstrueux du lac Stymphale. Héraclès (et son équipement) ainsi que trois oiseaux sont déjà instanciés dans *index.php*.
+> Tu noteras que quelques modifications ont été apportées ici, car le déroulement d'une partie se fait maintenant par tours. A chaque tour, tu pourras te déplacer ou attaquer afin de rendre la partie un peu plus intéractive. Les sessions sont utilisées pour persister les informations d'un tour à l'autre, mais tu n'as pas à te soucier de cela, concentre toi sur tes classes et sur la partie du fichier *index.php* que tu as le droit de modifier.
+> Tu remarqueras aussi un bouton "Reset" en haut à droite qui te permets de "recommencer" une partie en réinitialisant le jeu aux valeurs initiales.
 
-> Pour le moment, les monstres et les héros sont tous deux des instances de la classe `Fighter`. Cependant, s'ils ont des propriétés communes propres aux combattants (name, life, dexterity, strength...) certaines caractéristiques diffèrent. Par exemple, seuls les `Hero` vont pouvoir porter de l'équipement (Shield, Weapon...).
->
-> Il ne devrait donc pas être possible d'attribuer une épée à un sanglier, or c'est pour le moment possible. Pour régler ce problème de conception, il faut passer par l'héritage.
+## Move
+Les `Fighters` peuvent déjà se déplacer sur la carte grâce aux fonctions `setX()` et `setY()`. Mais cela n'est pas très pratique à manipuler et ne propose pas un déplacement réaliste puisqu'il est possible de "téléporter" le combattant n'importe où. 
+Tu va plutôt créer maintenant une fonction `move()` qui permettra de déplacer un `Fighter` d'une case à la fois, dans une direction donnée (nord, sud, est ou ouest).
 
-- Créé deux classes `Hero` et `Monster`, chacune héritant de `Fighter`. Les propriétés communes aux deux vont rester dans Fighter, celles propres aux `Hero` (`Weapon` et `Shield`) vont passer avec leur *getters* et *setters* dans `Hero`. La classe `Monster` ne fait pour l'instant qu'étendre `Fighter` sans autre modification.
-- De plus, les méthodes `getDamage()` et `getProtection()` ont un comportement différent entre un monstre et héros. Dans le premier cas, seules la force et la dextérité sont prises en compte, dans le cas du héros, les valeurs retournées prennent aussi en compte les caractéristiques des armes et armures. Les méthodes `getDamage()` et `getProtection()` doivent donc exister dans `Fighter` pour refléter le cas le plus simple, et être réécrites dans `Hero` pour prendre en compte les équipement (ce qui correspond normalement au code actuel de `Fighter` à la fin de l'atelier précédent).
+Créé cette méthode `move(Fighter $fighter, string $direction)` dans la classe `Arena`. Pourquoi dans `Arena` ? Car cela va permettre plus facilement de gérer le déplacement par rapport à la taille de la carte (et éviter de se déplacer en dehors) et d'empêcher par la suite d'avoir deux combattants sur une même position. 
 
-- Dans *index.php*, modifier les instanciations pour prendre en compte ses nouvelles classes, `Hero` pour Héraclès et `Monster` pour les 3 *birds*.
+Le paramètre `$direction` prendra obligatoire une des quatre valeurs `"N", "S", "W" ou "E"`. En fonction de la "lettre" récupérée, les coordonnées du combattant devront être modifiées en conséquence.
+> Par exemple, un mouvement vers le sud incrémente `$x`, un mouvement vers l'ouest décrémente `$y`, etc.
 
-## Arène
+De plus, fait en sorte qu'il soit impossible de "sortir" de la carte, mais également impossible de se déplacer sur une case déjà occupée par un autre `Fighter`. Pour t'aider à construire cette méthode, procède de la sorte : 
+- récupère les coordonnées actuelle du `Fighter`
+- en fonction de la direction, calcule les coordonnées où le personnage *souhaite* se déplacer (mais ne le déplace pas encore). 
+- vérifie que ces coordonnées de destination correspondent à une case accessible (dans la carte et non occupée). 
+- si le déplacement n'est pas autorisé, lance une Exception (avec idéalement deux messages différents pour une case occupée ou une sortie de carte). Dans *index.php* le code qui permet de captures les exceptions (`try/catch`) est déjà implémenté et si une exception est levée, elle s'affichera dans un bloc d'erreur en haut à droite de la page.
+- sinon, modifie les coordonées du `Fighter` pour qu'il se déplace à sa destination.
 
-> Un autre changement de conception apparaît avec cette nouvelle épreuve. Ici, Héraclès ne se bat plus contre un unique monstre, mais contre une multitude. Pour l'instant, un Fighter n'a pas de méthode qui lui permette de connaître tous les autres Fighter du combat. Il serait possible de créer une propriété `$adversaries` dans `Fighter`, mais chaque Fighter devrait contenir tous les autres, ce qui serait assez redondant et ne permettrait pas d'avoir facilement une vue d'ensemble. 
->
-> Une meilleure solution est de créer une nouvelle classe `Arena` qui contiendrait tous les `Fighter` ainsi que des méthodes pour les manipuler (les faire se combattre, les déplacer dans l'arène, etc.). De plus, cette arène peut servir de carte sur laquelle placer les `Fighter` et ajouter ainsi du positionnement au gameplay de notre jeu. 
+> Pour "tester" le déplacement, tu peux simplement utiliser les touches de ton clavier. Un peu de JS est utilisé pour détecté si tu utilises ces touches, et si c'est le cas, va exécuter la méthode `move()`. N'hésite pas à regarder comment le code est fait si cela t'intéresse, mais ne le modifie pas. 
 
-- Créé une class `Arena` contenant les propriétés `$monsters` (un tableau d'objets `Monster`) et `$hero` (un objet `Hero`). Par simplification, on partira du principe que nous avons forcément un unique héro dans une arène et un ou plusieurs monstres. 
-Ajouter les *getters* et *setters* comme d'habitude. Créé également un `__construct()` qui prendra en paramètre un héros et un tableau de monstres. Ajoute également une propriété `$size` (integer avec la valeur 10 par défaut) qui indiquera la taille de l'arène. 
+Ton personne se déplace, c'est bien ! Normalement, la notion de portée (en fonction de l'arme que le héros porte) est toujours fonctionnelle et les monstres doivent se griser ou non en fonction de la distance.
 
-- On veut positionner des combattants dans l'arène: ajoute les propriétés `$x` et `$y` (+ *getters* / *setters*) dans `Fighter` se qui te permettra de donner une position aux combattants. 
+## Fight
+Les juments de Diomèdes sont là, devant toi, tu peux te déplacer autour, te mettre hors de portée de leur dents tranchantes, avides de chair fraîche. C'est le moment d'attaquer !
 
-- Dans *index.php*, créé un objet de type `Arena` en lui passant `$heracles` et les trois *birds* que tu auras mis dans un tableau. Donne également des positions (x et y) à ces quatre Fighters. Actualise : tu dois les voir sur une carte représentant ton arène et tes combattants dessus ! Modifies les coordonnées de chacun, ils doivent bouger en conséquence !
+Sur l'arène, le troupeau est constitué de quatre juments qu'il va falloir combattre. Mais comment gérer qui attaque qui ? Il y a bien une méthode `fight()` dans `Fighter`, mais un `Fighter` n'a pas connaissance directement des autres combattants, c'est là encore la classe `Arena` qui a cette information, tu vas donc implémenter une méthode `battle()` directement dans `Arena`. Il est possible d'implémenter une bataille de plusieurs façon, il faut donc choisir des règles. Voici comment le *gameplay* va se dérouler pour ton jeu :
+- le `Hero` choisi sur la carte quel monstre il souhaite attaquer en cliquant dessus. Le clic sur le monstre est déjà implémenté, et un `id` correspondant au monstre choisi est envoyé. Ta méthode `battle()` devra donc prendre un unique paramètre `$id` qui correspond à l'index du monstre dans la propriété `$monsters` de `Arena`.
+- si le monstre est à portée du héros (utilise la méthode `touchable()` pour le vérifier), il est attaqué et subit les points de dégâts correspondant. La méthode `fight()` du héros est alors utilisée. Si le monstre n'est pas à portée du héros, lance une Exception.
+- si le monstre est à portée (utilise à nouveau `touchable()` mais du point de vue du monstre ciblé), ce dernier réplique et attaque à son tour le héros. Si le héros n'est pas à portée du monstre, lance une Exception. 
 
-## Garder ses distances
+# Boucherie chevaline
+Héraclès doit venir à bout des monstres, il peut attaquer et faire des dégâts. Pour le moment, si un monstre est "vaincu" (points de vie <0), il reste sur la carte et est toujours attaquable. Gérons ce cas de figure, toujours dans la méthode `battle()` 
+- à l'aide de la méthode `isAlive()` présente dans `Fighter`, teste après une attaque du héros, si le monstre attaqué est toujours en vie. Si oui la méthode continue et le monstre attaque alors Héraclès. 
+- Mais si le monstre est mort suite à l'attaque du héro, fais en sorte d'enlever le monstre du tableau `$monsters`. De ce fait, il ne doit pas attaquer juste en dessous et doit également "disparaître" de la carte, et la case où il se trouvait devient donc libre.
 
-> Maintenant que les combattants ont tous une position, essayons d'exploiter cette nouvelle information. Tout d'abord, il serait intéressant de connaître la distance entre le héros et chacun des monstres.
+> La mort du héros n'étant pas envisageable, cela ne sera pas implémenté ! De plus, si tous les monstres de l'arène sont vaincus, il ne se passera rien non plus. Mais tu es libre d'implémenter le code pour ces différents cas de figure en BONUS ;-)
 
-- Rappel : Pour calculer la distance entre deux points A et B sur une carte, cela revient à appliquer la formule suivante (qui n'est ni plus ni moins que le théorème de pythagore).
+# Expérience
 
-![](https://wikimedia.org/api/rest_v1/media/math/render/png/b337eb9100bc60a3125751271848230ad2a0d447)
+Lorsque le héros terrasse un ennemi, il doit gagner de l'expérience. Au bout d'un certain nombre de points d'expérience accumulé, il gagne un niveau. Ce type de mécanisme peut là encore être implémenté de bien des manières différentes. Voici ce que tu devras faire ici :
+- Ajoute une propriété `$experience` dans la classe `Fighter`, integer avec la valeur 1000 par défaut. Ainsi, monstre ou héros débute avec 1000 points d'XP.
+- Lorsqu'un monstre meurs, en plus de disparaître de la carte, le nombre de point d'expérience du monstre sera ajouté à l'expérience du héros.
+- Le niveau du héros sera automatiquement déduit de la quantité de point d'XP qu'il possède. Ce calcul de niveau n'est pas vraiment lié à l'arène. Elle pourrait être relié au `Fighter` mais nous allons essayer de respecter un peu mieux le premier principe SOLID (Single Responsability Principle), qui encourage à limiter la responsabilité d'une classe et éviter d'avoir des classes qui deviennent énormes et fourre-tout. 
+- Commence par créer une classe `Level` qui contiendra une unique méthode `calculate(int $experience)`. La méthode renverra le niveau en fonction d'un paramètre expérience, selon la formule suivante: `XP / 1000, arrondi à l'entier supérieur = LEVEL ` donc à 1500 points d'XP, le héros est au niveau 2 ; à 6300 points, le héros est au niveau 7, *etc*. 
+- Imagine que tu aies à gérer plusieurs héros, le calcul du niveau ne varie pas d'un personnage à l'autre. Il gagne de l'expérience et possède un niveau découlant directement de ce nombre de point. Ainsi, la méthode `calculate()` a un comportement d'une fonction PHP classique, tu peux ici l'utiliser de manière statique. Ajoute le mot clé `static` devant ta méthode, et tu l'utiliseras ainsi `Level::calculate($xp)` sans avoir besoin d'instancier un objet de type `Level`.
 
-HINT: en PHP, la racine carrée se calcule grace à la [fonction `sqrt()`](https://www.php.net/manual/fr/function.sqrt) et la puissance via l'[opérateur `**`](https://www.php.net/manual/fr/language.operators.arithmetic.php).
+> Tue un monstre ou deux, et observe ton panneau d'inventaire. Ton nombre de point d'expérience et ton niveau doivent changer.
 
-Créer une méthode `getDistance()` dans Arena prenant 2 objets `Fighter` en paramètre, qui retournera la distance entre ces deux combattants. Une fois cela réalisé, réactualise. La distance devrait s'afficher sur la carte au survol d'un oiseau par la souris.
-
-- Maintenant que tu peux calculer un éloignement, ajoute la notion de "portée" aux attaques. De base, un combattant sans arme ne devrait pas pouvoir frapper plus loin qu'un adversaire sur une case adjacente. Ajoute à `Fighter` la propriété `$range` (float à 1 par défaut) et la méthode `getRange()`.
-
-- Dans `Arena`, créé une méthode `touchable()` prenant en 1er paramètre l'attaquant et en second l'attaqué. Cette méthode doit renvoyer `true` si l'attaqué est à portée de l'attaquant, c'est-à-dire si ça distance de l'attaquée est inférieure ou égale à la portée (range) de l'attaqué. Une fois cela fait, actualise. Tu devrais voir apparaître en couleur les oiseaux à portée d'Héraclès, et en grisé ceux qui ne le sont pas. N'hésite pas à modifier les coordonnées du héro pour faire varier les distances. 
-
-- Ajoute ensuite une propriété `range` (float à 0.5 par défaut) sur les armes et le *getter* correspondant.
-
-- Dans `Hero` uniquement, ajoute un `getRange()` qui aditionnera la portée de base du combattant à celle de l'arme qu'il porte (pour un `Hero`, c'est donc cette méthode `getRange()` modifiée qui s'exécutera et non plus celle de `Fighter`, fais attention à la visibilité de la propriété `range`). Ainsi Heracles avec une épée devrait avoir une portée de 1.5 (ce qui doit lui permettre d'attaquer maintenant en diagonale). Le *range* s'affiche également dans l'inventaire du héros. Bouge le personnage pour vérifier que cela fonctionne.
-
-- Dans *index.php*, crée une nouvelle arme `$bow`, instance de Weapon, qui possède un range de 5, des dégâts à 8, et l'image 'bow.svg' (ajouter un `__construct` + des *getters* / *setters* serait sans doute une bonne idée à ce stade). Attribue cette arme à Héraclès en remplacement de son actuelle épée. Actualise et vérifie dans l'inventaire que l'arme apparaît bien. 
-Sur la carte, tu devrais constater que les oiseaux sont "atteignables" de plus loin puisque cette arme a un *range* bien plus important.
+- Enfin, pour que le niveau serve à quelque chose dans le *gameplay*, fait en sorte que `getStrength()` et `getDexterity()` retourne la force et la dextérité, multiplié par le niveau du combattant. Ainsi, si Héraclès à une force de base à 20, au niveau 1 `getStength()` renverra 20, puis 40 au niveau 2, etc.

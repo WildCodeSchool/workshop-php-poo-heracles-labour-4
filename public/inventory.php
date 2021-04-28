@@ -6,46 +6,54 @@
     </a>
     <div class="slots equipment">
         <div data-slot="Main weapon" class="slot">
-            <?php if (method_exists($heracles, 'getWeapon') && $heracles->getWeapon() !== null) : ?>
-                <img src="<?= $heracles->getWeapon()->getImage() ?>" alt="weapon">
+            <?php
+
+            use App\Level;
+
+            if (method_exists($arena->getHero(), 'getWeapon') && $arena->getHero()->getWeapon() !== null) : ?>
+                <img src="<?= $arena->getHero()->getWeapon()->getImage() ?>" alt="weapon">
             <?php endif; ?>
         </div>
         <div data-slot="Shield" class="slot">
-            <?php if (method_exists($heracles, 'getShield') && $heracles->getShield() !== null) : ?>
-                <img src="<?= $heracles->getShield()->getImage() ?>" alt="shield">
+            <?php if (method_exists($arena->getHero(), 'getShield') && $arena->getHero()->getShield() !== null) : ?>
+                <img src="<?= $arena->getHero()->getShield()->getImage() ?>" alt="shield">
             <?php endif; ?>
         </div>
         <div data-slot="Secondary weapon" class="slot"></div>
         <div data-slot="Head" class="slot">
-            <?php if (method_exists($heracles, 'getHelmet') && $heracles->getHelmet() !== null) : ?>
-                <img src="<?= $heracles->getHelmet()->getImage() ?>" alt="helmet">
+            <?php if (method_exists($arena->getHero(), 'getHelmet') && $arena->getHero()->getHelmet() !== null) : ?>
+                <img src="<?= $arena->getHero()->getHelmet()->getImage() ?>" alt="helmet">
             <?php endif; ?>
 
         </div>
         <div data-slot="Ring" class="slot"></div>
         <div data-slot="Armory" class="slot"></div>
         <div data-slot="Attack" class="slot statistic">
-            <?php if (method_exists($heracles, 'getDamage')) {
-                echo $heracles->getDamage();
+            <?php if (method_exists($arena->getHero(), 'getDamage')) {
+                echo $arena->getHero()->getDamage();
             } ?>
         </div>
         <div data-slot="Defense" class="slot statistic">
-            <?php if (method_exists($heracles, 'getDefense')) {
-                echo $heracles->getDefense();
+            <?php if (method_exists($arena->getHero(), 'getDefense')) {
+                echo $arena->getHero()->getDefense();
             }  ?>
         </div>
-        <div data-slot="Life" class="slot statistic"><?= $heracles->getLife() ?></div>
+        <div data-slot="Life" class="slot statistic"><?= $arena->getHero()->getLife() ?></div>
         <div data-slot="Range" class="slot statistic">
-            <?php if (method_exists($heracles, 'getRange')) {
-                echo $heracles->getRange();
+            <?php if (method_exists($arena->getHero(), 'getRange')) {
+                echo $arena->getHero()->getRange();
             }  ?>
-        </div>    </div>
-    <div class="character">
-        <h2 class="name"><?= $heracles->getName() ?></h2>
-        <div class="avatar">
-            <img src="<?= $heracles->getImage() ?>" alt="heracles">
         </div>
-        <p class="level">Level 1</p>
+    </div>
+    <div class="character">
+        <h2 class="name"><?= $arena->getHero()->getName() ?></h2>
+        <div class="avatar">
+            <img src="<?= $arena->getHero()->getImage() ?>" alt="heracles">
+        </div>
+        <div>
+            <div class="level">Level <?= Level::calculate($arena->getHero()->getXp()) ?></div>
+            <div class="xp"><?= $arena->getHero()->getXp() . 'XP' ?></div>
+        </div>
     </div>
 
     <div class="slots inventory">
