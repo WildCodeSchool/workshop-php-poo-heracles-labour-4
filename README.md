@@ -8,9 +8,12 @@ Le travail continue pour Héraclès. Il doit maintenant venir à bout des jument
 
 Pour ce nouvel atelier, tu reprends là encore où tu t'étais arrêté à l'étape précédente. Tu as un héros qui peut se déplacer et une gestion de la portée pour tes attaques. 
 
-> Tu noteras que quelques modifications ont été apportées ici, car le déroulement d'une partie se fait maintenant sur plusieurs tours. À chaque tour, tu pourras te déplacer ou attaquer afin de rendre la partie un peu plus intéractive. Les sessions sont utilisées pour persister les informations d'un tour à l'autre, mais tu n'as pas à te soucier de cela, concentre toi sur tes classes. Tu ne devrais pas non plus avoir à modifier le fichier *index.php* que tu as le droit de modifier, l'arène, le héros et les monstres sont déjà instanciés.
+> Tu noteras que quelques modifications ont été apportées ici, car le déroulement d'une partie se fait maintenant sur plusieurs tours. À chaque tour, tu pourras te déplacer ou attaquer afin de rendre la partie un peu plus intéractive. Les sessions sont utilisées pour persister les informations d'un tour à l'autre, mais tu n'as pas à te soucier de cela, concentre toi sur tes classes. Tu ne devrais pas non plus avoir à modifier le fichier *index.php*, l'arène, le héros et les monstres sont déjà instanciés.
 
 > Tu remarqueras aussi un bouton "Reset" en haut à droite qui te permets de "recommencer" une partie en réinitialisant le jeu.
+
+## Monsters, Hero and Fighters
+Dans l'atelier précédent, tu as créé les classes `Hero` et `Monster` qui étendent tous deux `Fighter`. Cela n'a maintenant plus de sens d'instancier directement un objet de la classe `Fighter`. Un combattant est un concept abstrait, qui englobe les héros et les monstres qui eux sont plus concrets et ont leurs propre spécificités. Pour empêcher aux utilisateurs de ces classes d'instancier un objet `Fighter` (et donc les obliger à passer par une des deux classes filles), ajouter le mot clé `abstract` devant `class Fighter` dans ton fichier *Fighter.php*. 
 
 ## Un peu de déplacement
 Les `Fighter` peuvent déjà se déplacer sur la carte grâce aux fonctions `setX()` et `setY()`. Mais cela n'est pas très pratique à manipuler et ne propose pas un déplacement réaliste puisqu'il est possible de "téléporter" le combattant n'importe où. 
