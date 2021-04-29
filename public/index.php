@@ -48,11 +48,6 @@ if (!$arena instanceof Arena) {
 }
 $_SESSION['arena'] = $arena;
 
-/** ✅ DEBUT DE LA ZONE À MODIFIER ✅ **/
-
-
-
-/** ⛔ FIN DE LA ZONE A MODIFIER ⛔ **/
 try {
     if (!empty($_GET['move']) && method_exists($arena, 'move')) {
         $arena->move($arena->getHero(), $_GET['move']);
@@ -100,7 +95,7 @@ try {
                         <img src="<?= $monster->getImage() ?>" alt="monster">
                         <figcaption><?= $monster->getName() . '(' . $monster->getLife() . ')' ?></figcaption>
                     </figure>
-                    <progress class="life" max="100" value=" <?= $monster->getLife() ?>"></progress>
+                    <progress class="life" max="100" value="<?= $monster->getLife() ?>"></progress>
                 </div>
             <?php endforeach; ?>
         </div>
