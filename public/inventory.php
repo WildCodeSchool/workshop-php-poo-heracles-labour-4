@@ -52,13 +52,13 @@
         </div>
         <div>
             <div class="level">Level
-                <?php if (class_exists('App\Level') && method_exists($arena->getHero(), 'getXp')) {
-                    echo Level::calculate($arena->getHero()->getXp());
+                <?php if (class_exists('App\Level') && method_exists($arena->getHero(), 'getExperience')) {
+                    echo Level::calculate($arena->getHero()->getExperience());
                 } ?>
             </div>
             <div class="xp">
-                <?php if (method_exists($arena->getHero(), 'getXp')) {
-                    echo $arena->getHero()->getXp() . 'XP';
+                <?php if (method_exists($arena->getHero(), 'getExperience')) {
+                    echo $arena->getHero()->getExperience() . 'XP';
                 } ?>
             </div>
         </div>
