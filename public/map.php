@@ -1,5 +1,6 @@
 <?php if (isset($arena)) : ?>
     <div class="map" style="--tiles-number: <?= $arena->getSize() ?>">
+            <img class="boussole" src="assets/images/boussole.svg" alt="boussole">
         <?php for ($y = 0; $y < $arena->getSize(); $y++) : ?>
             <?php for ($x = 0; $x < $arena->getSize(); $x++) : ?>
                 <div>
@@ -17,6 +18,7 @@
             <?php endfor; ?>
         <?php endfor; ?>
     </div>
+
 <?php else : ?>
     <p>Add fighters in Arena</p>
 <?php endif; ?>
