@@ -352,6 +352,15 @@ a:any-link {
 
 /** MAP **/
 
+.boussole {
+    --boussole-size:200px;
+    position:absolute;
+    right: calc(var(--boussole-size) * -1);
+    top: 40%;
+    width: var(--boussole-size);
+    height: var(--boussole-size);
+    background-image: unset;
+}
 
 .map {
     --size:70px;
@@ -359,6 +368,7 @@ a:any-link {
     --map-inclination:70deg;
     --map-rotation:45deg;
     display: grid;
+    position: relative;
     grid-template-columns: repeat(var(--tiles-number), var(--size));
     grid-template-rows: repeat(var(--tiles-number), var(--size));
     margin: var(--spacing-2);
