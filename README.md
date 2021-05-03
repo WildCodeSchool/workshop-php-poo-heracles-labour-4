@@ -22,7 +22,7 @@ Tu va créer maintenant une fonction `move()` qui permettra de déplacer un `Fig
 Créé cette méthode `move(Fighter $fighter, string $direction)` dans la classe `Arena`. 
 
 Le paramètre `$direction` prendra obligatoire une des quatre valeurs `"N", "S", "W" ou "E"`. En fonction de la "lettre" récupérée, les coordonnées du combattant devront être modifiées en conséquence.
-> Par exemple, un mouvement vers le sud incrémente `$x`, un mouvement vers l'ouest décrémente `$y`, etc.
+> Par exemple, un mouvement vers le sud incrémente `$y`, un mouvement vers l'ouest décrémente `$x`, etc.
 
 De plus, fait en sorte qu'il soit impossible de "sortir" de la carte, mais également impossible de se déplacer sur une case déjà occupée par un autre `Fighter`. Pour t'aider à construire cette méthode, procède de la sorte : 
 - récupère les coordonnées actuelle du `Fighter` passé en paramètre
