@@ -4,7 +4,7 @@ document.addEventListener('keydown', (event) => {
 
     if (keyName in directions) {
         event.preventDefault();
-        fetch('http://localhost:8000/?move=' + directions[keyName])
+        fetch('/?move=' + directions[keyName])
             .then(response => response.text())
             .then(html => document.documentElement.innerHTML = html);
     }
