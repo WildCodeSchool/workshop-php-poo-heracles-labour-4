@@ -82,3 +82,7 @@ Tue un monstre ou deux, et observe ton panneau d'inventaire. Ton nombre de point
 - Enfin, pour que le niveau serve à quelque chose dans le *gameplay*, fait en sorte que `getStrength()` et `getDexterity()` retourne la force et la dextérité, multiplié par le niveau du combattant. Ainsi, si Héraclès à une force de base à 20, au niveau 1 `getStength()` renverra 20, puis 40 au niveau 2, *etc.* 
 
 Bravo, ce nouvel atelier est maintenant terminé, notre héros peut aller se reposer un peu avant sa prochaine mission !
+
+**Épisode suivant**  
+[La biche de Cérynie](https://wildcodeschool.github.io/workshop-php-poo-heracles-labour-5/)
+{: .text-center :}
